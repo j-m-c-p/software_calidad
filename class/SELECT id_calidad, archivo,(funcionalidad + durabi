@@ -1,0 +1,140 @@
+SELECT id_calidad, archivo,(funcionalidad + durabilidad + proposito + diseño + documentacion + eficiencia)*eficacia*tb_tipo_archivo.peso_archivo AS resultado SELECT SUM(tipo_archivo) FROM tb_calidad, tb_tipo_archivo 
+
+SELECT COUNT(*) FROM tb_calidad
+
+SELECT id_calidad, archivo,(funcionalidad + durabilidad + proposito + diseño + documentacion + eficiencia)*eficacia*tb_tipo_archivo.peso_archivo AS resultado, (SELECT COUNT(*) AS conteo FROM tb_calidad), (SELECT COUNT(*) AS conteo2 FROM tb_tipo_archivo) FROM tb_calidad, tb_tipo_archivo
+
+SELECT peso_archivo FROM tb_tipo_archivo WHERE tipo_archivo='js'
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+SELECT id_calidad, archivo,(funcionalidad + durabilidad + proposito + diseño + documentacion + eficiencia)*eficacia* (SELECT t1.peso_archivo FROM tb_tipo_archivo t1 WHERE t1.id_archivo=tb_calidad.id_archivo) AS resultado, 
+
+(SELECT COUNT(*) FROM tb_calidad)  AS conteo 
+
+
+FROM tb_calidad
+
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+SELECT SUM((funcionalidad + durabilidad + proposito + diseño + documentacion + eficiencia)*eficacia* (SELECT t1.peso_archivo FROM tb_tipo_archivo t1 WHERE t1.id_archivo=tb_calidad.id_archivo))*100/(SELECT SUM(peso_archivo)*6 AS suma FROM tb_tipo_archivo) AS resultado
+
+
+FROM tb_calidad
+
+
+-----------------------
+SELECT SUM(peso_archivo)*6 AS suma FROM tb_tipo_archivo
+_____________________________________________________________
+SELECT t1.peso_archivo FROM tb_tipo_archivo t1, tb_calidad t2
+WHERE t1.id_archivo=t2.id_archivo
+_______________________________________________________________
+
+----------------------------------------------------------
+SELECT id_prototipo,criterio FROM tb_calidad t1, tb_criterios t2 WHERE t2.id_criterio=t1.id_criterio
+
+
+-----------------------------------------------------------------------------------------------------------------
+SELECT sum(calificacion * (SELECT SUM(divi)  FROM	tb_criterios),
+(SELECT t1.peso_archivo FROM tb_tipo_archivo t1 WHERE t1.id_archivo=tb_calidad.id_archivo))
+AS result
+FROM tb_calidad t1, tb_criterios t2 WHERE t2.id_criterio=t1.id_criterio
+-----------------------------------------------------------------------------------------------------------------
+
+SELECT sum(calificacion) * (SELECT divi  FROM	tb_criterios),
+(SELECT t1.peso_archivo FROM tb_tipo_archivo t1, tb_calidad t2
+WHERE t1.id_archivo=t2.id_archivo)
+AS result
+FROM tb_calidad t1, tb_criterios t2 WHERE t2.id_criterio=t1.id_criterio
+
+_____________________________________________________------
+suma el peso del archivo 1 
+SELECT SUM(peso_archivo) FROM tb_tipo_archivo t1, tb_archivo WHERE t1.id_tipo_archivo='1'
+SELECT SUM(peso_archivo)*6 FROM tb_tipo_archivo t1, tb_archivo WHERE t1.id_tipo_archivo='1'
+SELECT peso_archivo FROM tb_tipo_archivo t1, tb_archivo WHERE t1.id_tipo_archivo=tb_archivo.id_tipo_archivo
+
+--------------------------------------------------------------------------------------------
+ME TRAE EL PESO DE
+SELECT t1.peso_archivo FROM tb_tipo_archivo t1, tb_archivo, tb_calidad WHERE t1.id_tipo_archivo=tb_archivo.id_tipo_archivo AND tb_archivo.id_archivo=tb_calidad.id_archivo
+---------------------------------------------------------------------------------------------------------------
+SELECT SUM(valor)<>0 FROM tb_calidad, tb_criterios
+ WHERE tb_criterios.id_criterio=tb_calidad.id_criterio
+
+ -_--------------------------------------------------------------------------------------------------------------------
+ SELECT valor from tb_calidad  WHERE tb_calidad.id_criterio = 7 
+ --------------------------------------------------------------------------------------------
+ SELECT SUM(valor) * (SELECT valor from tb_calidad  WHERE tb_calidad.id_criterio = 7)
+
+AS promedio
+FROM tb_calidad WHERE tb_calidad.id_criterio < 7 
+
+
+__________________________________________funcio
+
+
+
+SELECT SUM(valor)*(SELECT valor FROM tb_calidad WHERE tb_calidad.id_criterio = 7 )*100/(SELECT SUM(peso_archivo)*6 FROM tb_tipo_archivo t1, tb_archivo, tb_calidad WHERE t1.id_tipo_archivo=tb_calidad.id_archivo) AS promedio
+FROM tb calidad  WHERE tb_calidad.id_criterio < 7
+
+
+SELECT t1.peso_archivo FROM tb_tipo_archivo t1, tb_archivo, tb_calidad WHERE t1.id_tipo_archivo=tb_calidad.id_archivo
+
+
+SELECT ( SUM(nota) * ( SELECT (nota) FROM tb_calificaciones WHERE id_criterio = 7 ) * (peso_archivo) ) 
+* 100 
+/ ( COUNT(nota) * (peso_archivo) )
+FROM tb_calificaciones, tb_tipo_archivo
+WHERE id_criterio < 7
+AND tb_tipo_archivo.id_archivo = tb_calificaciones.tipo_archivo
+
+______________________________________________________________________________________________________________________________________________________________________
+SELECT  (SUM(valor)* ( SELECT (valor) FROM tb_calidad WHERE id_criterio = 7 AND tb_calidad.id_archivo=tb_archivo.id_archivo )* (peso_archivo) )*100/ ( COUNT(valor) * (peso_archivo) ), archivo
+
+
+FROM tb_calidad, tb_tipo_archivo, tb_archivo
+WHERE id_criterio < 7
+AND tb_archivo.id_archivo = tb_calidad.id_archivo
+GROUP BY archivo
+
+
+
+
+SELECT  (SUM(valor)* ( SELECT (valor) FROM tb_calidad WHERE id_criterio = 7 AND tb_calidad.id_archivo=tb_archivo.id_archivo )* (peso_archivo) )*100/ ( COUNT(valor) * (peso_archivo) ), archivo
+
+
+FROM tb_calidad, tb_tipo_archivo, tb_archivo
+WHERE id_criterio < 7
+AND tb_archivo.id_archivo = tb_calidad.id_archivo
+GROUP BY archivo
+
+SELECT ( SUM(nota) * ( SELECT (nota) FROM tb_calificaciones WHERE id_criterio = 7 ) * (peso_archivo) ) 
+* 100 
+/ ( COUNT(nota) * (peso_archivo) )
+FROM tb_calificaciones, tb_tipo_archivo
+WHERE id_criterio < 7
+AND tb_tipo_archivo.id_archivo = tb_calificaciones.tipo_archivo
+
+****************************************************************************
+SELECT  (SUM(valor)* ( SELECT (valor) FROM tb_calidad WHERE id_criterio = 7 AND tb_calidad.id_archivo=tb_archivo.id_archivo )* (peso_archivo) )*100/ ( COUNT(valor) * (peso_archivo) ) AS porcentaje, archivo
+
+
+FROM tb_calidad, tb_tipo_archivo, tb_archivo, tb_prototipos
+WHERE id_criterio < 7
+AND tb_archivo.id_archivo = tb_calidad.id_archivo 
+GROUP BY tb_archivo.id_prototipo
+_____________________________________________________________________________________________________***************************____________________________________
+SELECT ( SUM(valor) * ( SELECT (valor) FROM tb_calidad WHERE id_criterio = 7 AND tb_calidad.id_archivo=tb_tipo_archivo.id_archivo ) * (peso_archivo) ) 
+* 100 
+/ ( COUNT(valor) * (peso_archivo) ) AS porcentaje, archivo
+FROM tb_calidad, tb_tipo_archivo
+WHERE id_criterio < 7
+AND tb_tipo_archivo.id_archivo = tb_calidad.id_archivo
+GROUP BY archivo
+***************************************************
+SELECT  (SUM(valor)* ( SELECT (valor) FROM tb_calidad WHERE id_criterio = 7 AND tb_calidad.id_archivo=tb_archivo.id_archivo )* (peso_archivo) )*100/ ( COUNT(valor) * (peso_archivo) ) AS porcentaje, (tb_prototipos.nombre_prototipo) AS prototipo
+FROM tb_calidad, tb_tipo_archivo, tb_archivo, tb_prototipos
+WHERE id_criterio < 7
+AND tb_archivo.id_archivo = tb_calidad.id_archivo AND tb_archivo.id_prototipo=tb_prototipos.id_prototipo 
+GROUP BY tb_archivo.id_prototipo
+***************************************************
